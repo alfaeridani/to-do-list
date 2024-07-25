@@ -22,7 +22,15 @@ function addToDo() {
     refreshMainContent();
 }
 
+function removeMainContent() {
+    const content = document.querySelector(".main-content");
+    while (content.firstChild) {
+        content.removeChild(content.firstChild);
+    }
+}
+
 function refreshMainContent() {
+    removeMainContent();
     let mainContentDiv = document.querySelector(".main-content");
     for (let toDo of toDoContainer) {
         let title = document.createElement("h2");
@@ -35,3 +43,6 @@ const toDoContainer = [];
 toDoContainer.push(new ToDo('Eat mango', 'with rice maybe', '2024/08/30', 'High'));
 toDoContainer.push(new ToDo('Take a shower', 'Also brush your teeth', '2024/08/30', 'Medium'));
 console.log(toDoContainer);
+
+let addToDoButton = document.querySelector("#add-to-do");
+addToDoButton.addEventListener('click', addToDo);
