@@ -46,3 +46,5 @@ console.log(toDoContainer);
 
 let addToDoButton = document.querySelector("#add-to-do");
 addToDoButton.addEventListener('click', addToDo);
+
+refreshMainContent();
