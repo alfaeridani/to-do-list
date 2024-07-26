@@ -8,13 +8,39 @@
 <script defer src="main.js"></script></head>
 <body>
     <dialog class="add-to-do-dialog">
-        <button id="close-button">Close</button>
-        <h2>Add To-Do</h2>
-        
+        <form class="add-to-do-form">
+            <button id="close-button">Close</button>
+            <h2>Add To-Do</h2>
+            <label for="task-name">Task name:</label>
+            <input type="text" id="task-name" name="task-name" placeholder="Enter your task here..." required>
+            
+            <label for="description">description:</label>
+            <textarea id="description" name="description" placeholder="Add some description here..."></textarea>
+            <label for="due-date">Due date:</label>
+            <input type="date" id="due-date" name="due-date" required>
+            <fieldset>
+                <legend>Priority</legend>
+                <div>
+                    <input type="radio" id="low" name="priority" value="low">
+                    <label for="low">Low</label>
+                </div>
+                <div>
+                    <input type="radio" id="medium" name="priority" value="medium" checked>
+                    <label for="medium">Medium</label>
+                </div>
+                <div>
+                    <input type="radio" id="high" name="priority" value="high">
+                    <label for="high">High</label>
+                </div>
+            </fieldset>
+            <button type="submit">Submit</button>
+        </form>
     </dialog>
+
     <div class="header">
         <h1>My To-Do-List</h1>
     </div>
+
     <div class="sidebar">
         <button id="add-to-do-button">Add task</button>
         <ul class="date-list">
@@ -28,8 +54,10 @@
             <li>Arts</li>
         </ul>
     </div>
+
     <div class="main-content">
     </div>
+    
     <div class="footer">
         <p>Created by Alfa Eridani.</p>
     </div>
