@@ -15,14 +15,29 @@ function deleteToDo(index) {
     toDoContainer.splice(index, 1);
 }
 
+function addToDoToContainer(title, description, dueDate, priority) {
+    toDoContainer.push(new ToDo(title, description, dueDate, priority));
+}
+
 const toDoContainer = [];
-toDoContainer.push(new ToDo('Eat mango', 'with rice maybe', '2024/08/30', 'High'));
-toDoContainer.push(new ToDo('Take a shower', 'Also brush your teeth', '2024/08/30', 'Medium'));
+addToDoToContainer('Eat mango', 'with rice maybe', '2024/08/30', 'High');
+addToDoToContainer('Take a shower', 'Also brush your teeth', '2024/08/30', 'Medium');
 console.log(toDoContainer);
 
 let addToDoButton = document.querySelector("#add-to-do-button");
 let closeButton = document.querySelector("#close-button");
+let addToDoForm = document.querySelector(".add-to-do-form");
 addToDoButton.addEventListener('click', openDialog);
 closeButton.addEventListener('click', closeDialog);
+addToDoForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    let title = document.querySelector("#task-name").value;
+    let description = document.querySelector("#description").value;
+    let dueDate = document.querySelector("#due-date").value;
+    let priority = document.querySelector("input[name=priority]:checked").value;
+    addToDoToContainer(title, description, dueDate, priority);
+    refreshMainContent(toDoContainer);
+    closeDialog();
+})
 
 refreshMainContent(toDoContainer);
