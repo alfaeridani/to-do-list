@@ -1,3 +1,4 @@
+import { refreshMainContent } from './mainContentDiv';
 import './style.css';
 
 class ToDo {
@@ -19,24 +20,7 @@ function addToDo() {
     let dueDate = prompt("Due date?", "12th August 2025");
     let priority = prompt("Priority", "High");
     toDoContainer.push(new ToDo(title, description, dueDate, priority));
-    refreshMainContent();
-}
-
-function removeMainContent() {
-    const content = document.querySelector(".main-content");
-    while (content.firstChild) {
-        content.removeChild(content.firstChild);
-    }
-}
-
-function refreshMainContent() {
-    removeMainContent();
-    let mainContentDiv = document.querySelector(".main-content");
-    for (let toDo of toDoContainer) {
-        let title = document.createElement("h2");
-        title.textContent = toDo.title;
-        mainContentDiv.appendChild(title);
-    }
+    refreshMainContent(toDoContainer);
 }
 
 const toDoContainer = [];
@@ -47,4 +31,4 @@ console.log(toDoContainer);
 let addToDoButton = document.querySelector("#add-to-do");
 addToDoButton.addEventListener('click', addToDo);
 
-refreshMainContent();
+refreshMainContent(toDoContainer);
