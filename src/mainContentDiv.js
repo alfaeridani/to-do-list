@@ -5,6 +5,12 @@ function removeMainContent() {
     }
 }
 
+function addDeleteButtonListener(container, toDo) {
+    let index = container.indexOf(toDo);
+    container.splice(index, 1);
+    refreshMainContent(container);
+}
+
 function refreshMainContent(container) {
     removeMainContent();
     let mainContentDiv = document.querySelector(".main-content");
@@ -12,6 +18,14 @@ function refreshMainContent(container) {
         let title = document.createElement("h2");
         title.textContent = toDo.title;
         mainContentDiv.appendChild(title);
+
+        let button = document.createElement("button");
+        button.textContent = "Delete";
+        mainContentDiv.appendChild(button);
+
+        button.addEventListener('click', () => {
+            addDeleteButtonListener(container, toDo);
+        });
     }
 }
 
