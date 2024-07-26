@@ -6,17 +6,38 @@ body {
     margin: 0;
 }
 
+h1 {
+    margin: 0;
+}
+
 .header {
     grid-column: 1 / 3;
-    background-color: aqua;
+    background-color: hsl(0, 0%, 100%);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+.header > svg {
+    height: 50px;
+    width: 50px;
+    fill:hsl(7, 78%, 44%)
+}
+
+.header > h1 {
+    color: hsl(7, 78%, 44%);
+    font-family: "Pacifico", cursive;
 }
 
 .sidebar {
-    background-color: bisque;
+    background-color: antiquewhite;
 }
 
 .main-content {
-    background-color: darkseagreen;
+    background-color: beige;
 }
 
 .footer {

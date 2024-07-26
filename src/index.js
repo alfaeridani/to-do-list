@@ -42,5 +42,4 @@ openDialogListener();
 closeDialogListener();
 submitDialogListener(TO_DO_CONTAINER);
 
-
 refreshMainContent(TO_DO_CONTAINER);
