@@ -1,14 +1,20 @@
-function openDialog() {
+function openDialogListener() {
+    let addToDoButton = document.querySelector("#add-to-do-button");
     let addToDoDialog = document.querySelector(".add-to-do-dialog");
-    addToDoDialog.showModal();
+    addToDoButton.addEventListener('click', () => {
+        addToDoDialog.showModal();
+    });
 }
 
-function closeDialog() {
+function closeDialogListener() {
+    let closeButton = document.querySelector("#close-button");
     let addToDoDialog = document.querySelector(".add-to-do-dialog");
-    addToDoDialog.close();
+    closeButton.addEventListener('click', () => {
+        addToDoDialog.close();
+    });
 }
 
 export {
-    openDialog,
-    closeDialog
+    openDialogListener,
+    closeDialogListener,
 }
