@@ -10,33 +10,6 @@
 <script defer src="main.js"></script></head>
 <body>
     <dialog class="add-to-do-dialog">
-        <form class="add-to-do-form">
-            <button id="close-button">Close</button>
-            <h2>Add New To-Do</h2>
-            <label for="task-name">Task name:</label>
-            <input type="text" id="task-name" name="task-name" placeholder="Enter your task here..." required>
-            
-            <label for="description">description:</label>
-            <textarea id="description" name="description" placeholder="Add some description here..."></textarea>
-            <label for="due-date">Due date:</label>
-            <input type="date" id="due-date" name="due-date" required>
-            <fieldset>
-                <legend>Priority</legend>
-                <div>
-                    <input type="radio" id="low" name="priority" value="low">
-                    <label for="low">Low</label>
-                </div>
-                <div>
-                    <input type="radio" id="medium" name="priority" value="medium" checked>
-                    <label for="medium">Medium</label>
-                </div>
-                <div>
-                    <input type="radio" id="high" name="priority" value="high">
-                    <label for="high">High</label>
-                </div>
-            </fieldset>
-            <button type="submit">Submit</button>
-        </form>
     </dialog>
 
     <div class="header">
@@ -49,17 +22,18 @@
 
     <div class="sidebar">
         <button id="add-to-do-button">Add task</button>
+        <h2>My Tasks</h2>
         <ul class="date-list">
-            <li>All</li>
-            <li>Today</li>
-            <li>Upcoming</li>
+            <li class="all-task">All</li>
+            <li class="today-task">Today</li>
+            <li class="upcoming-task">Upcoming</li>
         </ul>
         <h2>Projects</h2>
         <ul class="project-list">
-            <li>Sports</li>
-            <li>Groceries</li>
-            <li>Appointments</li>
-            <li>Arts</li>
+            <li class="sports-project">Sports</li>
+            <li class="groceries-project">Groceries</li>
+            <li class="appointments-project">Appointments</li>
+            <li class="arts-project">Arts</li>
         </ul>
     </div>
 

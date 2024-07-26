@@ -1,45 +1,76 @@
-import { closeDialogListener, openDialogListener } from './dialog';
-import { refreshMainContent } from './mainContentDiv';
+import { closeDialogListener, createDialog, openDialogListener } from './dialog';
 import './style.css';
 
 class ToDo {
-    constructor(title, description, dueDate, priority) {
+    constructor(title, description, dueDate, priority, project) {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
+        this.project = project;
     }
 }
 
-function deleteToDo(index) {
-    TO_DO_CONTAINER.splice(index, 1);
+function addToDoToContainer(title, description, dueDate, priority, project) {
+    TO_DO_CONTAINER.push(new ToDo(title, description, dueDate, priority, project));
 }
 
-function addToDoToContainer(title, description, dueDate, priority) {
-    TO_DO_CONTAINER.push(new ToDo(title, description, dueDate, priority));
+function listAllProjects(toDoContainer, projectContainer) {
+    for (let toDo of toDoContainer) {
+        if (toDo['project'] !== '') {
+            projectContainer.push(toDo['project']);
+        }
+    }
 }
 
-function submitDialogListener(container) {
-    let addToDoForm = document.querySelector(".add-to-do-form");
-    let addToDoDialog = document.querySelector(".add-to-do-dialog");
-    addToDoForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        let title = document.querySelector("#task-name").value;
-        let description = document.querySelector("#description").value;
-        let dueDate = document.querySelector("#due-date").value;
-        let priority = document.querySelector("input[name=priority]:checked").value;
-        addToDoToContainer(title, description, dueDate, priority);
-        refreshMainContent(container);
-        addToDoDialog.close();
-    })
+function removeMainContent() {
+    const content = document.querySelector(".main-content");
+    while (content.firstChild) {
+        content.removeChild(content.firstChild);
+    }
+}
+
+function addDeleteButtonListener(container, toDo) {
+    let index = container.indexOf(toDo);
+    container.splice(index, 1);
+    refreshMainContent(container);
+}
+
+function refreshMainContent() {
+    removeMainContent();
+    let mainContentDiv = document.querySelector(".main-content");
+    for (let toDo of TO_DO_CONTAINER) {
+        let title = document.createElement("h2");
+        title.textContent = toDo.title;
+        mainContentDiv.appendChild(title);
+
+        let deleteButton = document.createElement("button");
+        deleteButton.textContent = "Delete";
+        mainContentDiv.appendChild(deleteButton);
+
+        deleteButton.addEventListener('click', () => {
+            addDeleteButtonListener(TO_DO_CONTAINER, toDo);
+        });
+    }
 }
 
 const TO_DO_CONTAINER = [];
-addToDoToContainer('Eat mango', 'with rice maybe', '2024/08/30', 'High');
-addToDoToContainer('Take a shower', 'Also brush your teeth', '2024/08/30', 'Medium');
+const PROJECTS_LIST  = [];
+
+addToDoToContainer('Eat mango', 'with rice maybe', '2024/08/30', 'High', 'Sports');
+addToDoToContainer('Take a shower', 'Also brush your teeth', '2024/08/30', 'Medium', 'Groceries');
+addToDoToContainer('Take a shower', 'Also brush your teeth', '2024/08/30', 'Medium', ' ');
+
+listAllProjects(TO_DO_CONTAINER, PROJECTS_LIST);
+console.log(PROJECTS_LIST);
 
 openDialogListener();
-closeDialogListener();
-submitDialogListener(TO_DO_CONTAINER);
+
+//submitDialogListener(TO_DO_CONTAINER);
 
 refreshMainContent(TO_DO_CONTAINER);
+
+export {
+    addToDoToContainer,
+    refreshMainContent
+}
