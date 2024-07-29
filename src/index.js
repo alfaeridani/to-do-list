@@ -1,4 +1,4 @@
-import { closeDialogListener, createDialog, openDialogListener } from './dialog';
+import { openDialogListener } from './dialog';
 import './style.css';
 
 class ToDo {
@@ -54,8 +54,22 @@ function refreshMainContent() {
     }
 }
 
+function changePage(pageClass) {
+    currentPage = pageClass;
+    console.log(currentPage);
+}
+
 const TO_DO_CONTAINER = [];
 const PROJECTS_LIST  = [];
+let currentPage = 'all-task';
+
+const pages = document.querySelectorAll(".page");
+pages.forEach((page) => {
+    page.addEventListener('click', () => {
+        let pageClass = page.classList[0];
+        changePage(pageClass);
+    })
+})
 
 addToDoToContainer('Eat mango', 'with rice maybe', '2024/08/30', 'High', 'Sports');
 addToDoToContainer('Take a shower', 'Also brush your teeth', '2024/08/30', 'Medium', 'Groceries');
@@ -65,8 +79,6 @@ listAllProjects(TO_DO_CONTAINER, PROJECTS_LIST);
 console.log(PROJECTS_LIST);
 
 openDialogListener();
-
-//submitDialogListener(TO_DO_CONTAINER);
 
 refreshMainContent(TO_DO_CONTAINER);
 

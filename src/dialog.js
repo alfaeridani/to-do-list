@@ -157,6 +157,4 @@ function submitDialogListener(container) {
 
 export {
     openDialogListener,
-    createDialog,
-    closeDialogListener
 }
