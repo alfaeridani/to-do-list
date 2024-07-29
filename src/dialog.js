@@ -67,6 +67,24 @@ function createDialog() {
     priorityLegend.textContent = 'Priority';
     priorityFieldset.appendChild(priorityLegend);
 
+    // Create the projects options
+    const projects = ['Sports', 'Groceries', 'Appointments', 'Arts'];
+    
+    const projectLabel = document.createElement('label');
+    projectLabel.setAttribute('for', 'project');
+    projectLabel.textContent = 'Project';
+
+    const projectSelect = document.createElement('select');
+    projectSelect.id = 'project';
+    projectSelect.name = 'project';
+
+    for (let project of projects) {
+        let projectOption = document.createElement('option');
+        projectOption.value = project.toLowerCase();
+        projectOption.textContent = project;
+        projectSelect.appendChild(projectOption);
+    }
+
     // Create the priority options
     const priorities = [
         { id: 'low', value: 'low', label: 'Low', checked: true },
@@ -109,6 +127,8 @@ function createDialog() {
     form.appendChild(dueDateLabel);
     form.appendChild(dueDateInput);
     form.appendChild(priorityFieldset);
+    form.appendChild(projectLabel);
+    form.appendChild(projectSelect);
     form.appendChild(submitButton);
 
     // Append the form to the body (or any other container element)
