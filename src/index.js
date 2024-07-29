@@ -39,14 +39,66 @@ function addDeleteButtonListener(container, toDo) {
 function refreshMainContent() {
     removeMainContent();
     let mainContentDiv = document.querySelector(".main-content");
-    for (let toDo of TO_DO_CONTAINER) {
-        let title = document.createElement("h2");
-        title.textContent = toDo.title;
-        mainContentDiv.appendChild(title);
 
-        let deleteButton = document.createElement("button");
-        deleteButton.textContent = "Delete";
-        mainContentDiv.appendChild(deleteButton);
+    let mainContentTitle = document.createElement("h2");
+    mainContentTitle.className = "main-content-title";
+    mainContentTitle.textContent = document.querySelector(`.${currentPage}`).textContent;
+    mainContentDiv.appendChild(mainContentTitle);
+
+    let toDosContainer = document.createElement("div");
+    toDosContainer.className = "to-dos-container";
+    mainContentDiv.appendChild(toDosContainer);
+
+    for (let toDo of TO_DO_CONTAINER) {
+        let title = document.createElement("p");
+        title.className = "title";
+        title.textContent = toDo.title;
+
+        let description = document.createElement("p");
+        description.className = "description";
+        description.textContent = toDo.description;
+
+        let dueDate = document.createElement("p");
+        dueDate.className = "due-date";
+        dueDate.textContent = toDo.dueDate;
+
+        let priority = document.createElement("p");
+        priority.className = "priority";
+        priority.textContent = toDo.priority;    
+
+        let project = document.createElement("p");
+        project.className = "project";
+        project.textContent = toDo.project;       
+
+        // Define the SVG namespace
+        const svgNS = "http://www.w3.org/2000/svg";
+
+        // Create the main SVG element
+        const deleteButton = document.createElementNS(svgNS, "svg");
+        deleteButton.setAttribute("class", "delete-icon");
+        deleteButton.setAttribute("xmlns", svgNS);
+        deleteButton.setAttribute("viewBox", "0 0 24 24");
+
+        // Create the title element
+        const deleteButtonTitle = document.createElementNS(svgNS, "title");
+        deleteButtonTitle.textContent = "trash-can";
+        deleteButton.appendChild(deleteButtonTitle);
+
+        // Create the path element
+        const path = document.createElementNS(svgNS, "path");
+        path.setAttribute("d", "M9,3V4H4V6H5V19A2,2 0 0,0 7,21H17A2,2 0 0,0 19,19V6H20V4H15V3H9M9,8H11V17H9V8M13,8H15V17H13V8Z");
+        deleteButton.appendChild(path);
+
+        let toDoContainer = document.createElement("div");
+        toDoContainer.className = "to-do";
+
+        toDoContainer.appendChild(title);
+        toDoContainer.appendChild(description);
+        toDoContainer.appendChild(dueDate);
+        toDoContainer.appendChild(priority);
+        toDoContainer.appendChild(project);
+        toDoContainer.appendChild(deleteButton);
+        toDosContainer.appendChild(toDoContainer);
 
         deleteButton.addEventListener('click', () => {
             addDeleteButtonListener(TO_DO_CONTAINER, toDo);
@@ -72,8 +124,15 @@ pages.forEach((page) => {
 })
 
 addToDoToContainer('Eat mango', 'with rice maybe', '2024/08/30', 'High', 'Sports');
-addToDoToContainer('Take a shower', 'Also brush your teeth', '2024/08/30', 'Medium', 'Groceries');
-addToDoToContainer('Take a shower', 'Also brush your teeth', '2024/08/30', 'Medium', ' ');
+addToDoToContainer('Take a shower', 'Also brush your teeth', '2024/09/01', 'Medium', 'Groceries');
+addToDoToContainer('Sleep', 'for 8 hours', '2024/09/12', 'Medium', 'Arts');
+addToDoToContainer('Eat mango', 'with rice maybe', '2024/08/30', 'High', 'Sports');
+addToDoToContainer('Take a shower', 'Also brush your teeth', '2024/09/01', 'Medium', 'Groceries');
+addToDoToContainer('Sleep', 'for 8 hours', '2024/09/12', 'Medium', 'Arts');
+addToDoToContainer('Eat mango', 'with rice maybe', '2024/08/30', 'High', 'Sports');
+addToDoToContainer('Take a shower', 'Also brush your teeth', '2024/09/01', 'Medium', 'Groceries');
+addToDoToContainer('Sleep', 'for 8 hours', '2024/09/12', 'Medium', 'Arts');
+
 
 listAllProjects(TO_DO_CONTAINER, PROJECTS_LIST);
 console.log(PROJECTS_LIST);

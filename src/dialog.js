@@ -80,7 +80,7 @@ function createDialog() {
 
     for (let project of projects) {
         let projectOption = document.createElement('option');
-        projectOption.value = project.toLowerCase();
+        projectOption.value = project;
         projectOption.textContent = project;
         projectSelect.appendChild(projectOption);
     }
@@ -167,8 +167,9 @@ function submitDialogListener(container) {
         let description = document.querySelector("#description").value;
         let dueDate = document.querySelector("#due-date").value;
         let priority = document.querySelector("input[name=priority]:checked").value;
+        let project = document.querySelector("#project").value;
         
-        addToDoToContainer(title, description, dueDate, priority);
+        addToDoToContainer(title, description, dueDate, priority, project);
         refreshMainContent(container);
         removeDialog();
         addToDoDialog.close();
