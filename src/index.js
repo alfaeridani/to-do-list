@@ -15,12 +15,15 @@ function addToDoToContainer(title, description, dueDate, priority, project) {
     TO_DO_CONTAINER.push(new ToDo(title, description, dueDate, priority, project));
 }
 
-function listAllProjects(toDoContainer, projectContainer) {
+function listAllProjects(toDoContainer) {
+    let projects = new Set();
     for (let toDo of toDoContainer) {
         if (toDo['project'] !== '') {
-            projectContainer.push(toDo['project']);
+            projects.add(toDo['project']);
+            console.log(projects);
         }
     }
+    return Array.from(projects);
 }
 
 function removeMainContent() {
@@ -108,21 +111,33 @@ function refreshMainContent() {
 
 function changePage(pageClass) {
     currentPage = pageClass;
-    console.log(currentPage);
+    refreshMainContent();
+}
+
+function addPageEventListener() {
+    const pages = document.querySelectorAll(".page");
+    pages.forEach((page) => {
+        page.addEventListener('click', () => {
+            let pageClass = page.classList[0];
+            changePage(pageClass);
+        })
+    })
+}
+
+function filterToDosByProject(project) {
+    const filteredToDos = [];
+    for (let toDo of TO_DO_CONTAINER) {
+        if (toDo['project'] === project) {
+            filteredToDos.push(toDo);
+        }
+    }
+    return filteredToDos;
 }
 
 const TO_DO_CONTAINER = [];
-const PROJECTS_LIST  = [];
+let PROJECTS_LIST  = [];
 let currentPage = 'all-task';
 
-const pages = document.querySelectorAll(".page");
-pages.forEach((page) => {
-    page.addEventListener('click', () => {
-        let pageClass = page.classList[0];
-        changePage(pageClass);
-    })
-})
-
 addToDoToContainer('Eat mango', 'with rice and fish maybe', '2024-08-30', 'high', 'Sports');
 addToDoToContainer('Take a shower', 'Also brush your teeth', '2024-09-01', 'medium', 'Groceries');
 addToDoToContainer('Sleep', 'for 8 hours', '2024-09-12', 'medium', 'Arts');
@@ -132,14 +147,13 @@ addToDoToContainer('Sleep', 'for 8 hours', '2024-09-12', 'medium', 'Arts');
 addToDoToContainer('Eat mango', 'with rice and fish maybe', '2024-08-30', 'high', 'Sports');
 addToDoToContainer('Take a shower', 'Also brush your teeth', '2024-09-01', 'medium', 'Groceries');
 addToDoToContainer('Sleep', 'for 8 hours', '2024-09-12', 'medium', 'Arts');
-
-
-listAllProjects(TO_DO_CONTAINER, PROJECTS_LIST);
-console.log(PROJECTS_LIST);
 
 openDialogListener();
+addPageEventListener();
 
-refreshMainContent(TO_DO_CONTAINER);
+console.log(filterToDosByProject('Groceries'));
+
+refreshMainContent();
 
 export {
     addToDoToContainer,
