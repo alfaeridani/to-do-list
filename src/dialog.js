@@ -23,7 +23,8 @@ function createDialog() {
     closeButton.textContent = 'Close';
 
     // Create the heading
-    const heading = document.createElement('h2');
+    const heading = document.createElement('h1');
+    heading.className = 'form-heading';
     heading.textContent = 'Add New To-Do';
 
     // Create the task name label and input
@@ -39,6 +40,12 @@ function createDialog() {
     taskNameInput.maxLength = 120;
     taskNameInput.required = true;
 
+    // Create task name div
+    const taskNameDiv = document.createElement('div');
+    taskNameDiv.className = 'input';
+    taskNameDiv.appendChild(taskNameLabel);
+    taskNameDiv.appendChild(taskNameInput);
+
     // Create the description label and textarea
     const descriptionLabel = document.createElement('label');
     descriptionLabel.setAttribute('for', 'description');
@@ -50,6 +57,12 @@ function createDialog() {
     descriptionTextarea.placeholder = 'Add some description here...';
     descriptionTextarea.maxLength = 360;
 
+    // Create description div
+    const descriptionDiv = document.createElement('div');
+    descriptionDiv.className = 'input';
+    descriptionDiv.appendChild(descriptionLabel);
+    descriptionDiv.appendChild(descriptionTextarea);
+
     // Create the due date label and input
     const dueDateLabel = document.createElement('label');
     dueDateLabel.setAttribute('for', 'due-date');
@@ -60,6 +73,12 @@ function createDialog() {
     dueDateInput.id = 'due-date';
     dueDateInput.name = 'due-date';
     dueDateInput.required = true;
+
+    // Create due date div
+    const dueDateDiv = document.createElement('div');
+    dueDateDiv.className = 'input';
+    dueDateDiv.appendChild(dueDateLabel);
+    dueDateDiv.appendChild(dueDateInput);
 
     // Create the priority fieldset and legend
     const priorityFieldset = document.createElement('fieldset');
@@ -84,6 +103,12 @@ function createDialog() {
         projectOption.textContent = project;
         projectSelect.appendChild(projectOption);
     }
+
+    // Create project div
+    const projectDiv = document.createElement('div');
+    projectDiv.className = 'input';
+    projectDiv.appendChild(projectLabel);
+    projectDiv.appendChild(projectSelect);
 
     // Create the priority options
     const priorities = [
@@ -120,15 +145,11 @@ function createDialog() {
     // Append all elements to the form
     form.appendChild(closeButton);
     form.appendChild(heading);
-    form.appendChild(taskNameLabel);
-    form.appendChild(taskNameInput);
-    form.appendChild(descriptionLabel);
-    form.appendChild(descriptionTextarea);
-    form.appendChild(dueDateLabel);
-    form.appendChild(dueDateInput);
+    form.appendChild(taskNameDiv);
+    form.appendChild(descriptionDiv);
+    form.appendChild(dueDateDiv);
     form.appendChild(priorityFieldset);
-    form.appendChild(projectLabel);
-    form.appendChild(projectSelect);
+    form.appendChild(projectDiv);
     form.appendChild(submitButton);
 
     // Append the form to the body (or any other container element)

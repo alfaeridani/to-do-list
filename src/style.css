@@ -1,6 +1,10 @@
+:root {
+    box-sizing: border-box;
+}
+
 body {
     display: grid;
-    grid-template-columns: 1fr 3fr;
+    grid-template-columns: 1fr 4fr;
     grid-template-rows: auto 1fr auto;
     height: 100vh;
     margin: 0;
@@ -25,7 +29,7 @@ h1, h2, ul {
 .header > svg {
     height: 50px;
     width: 50px;
-    fill:hsl(7, 78%, 44%)
+    fill:hsl(7, 78%, 44%);
 }
 
 .header > h1 {
@@ -34,13 +38,34 @@ h1, h2, ul {
 }
 
 .sidebar {
-    background-color: antiquewhite;
+    background-color: white;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar > h2 {
+    margin: 1rem 0 0.25rem 0;
+}
+
+.page {
+    margin: 0.5rem 0;
+}
+
+.page:hover {
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 #add-to-do-button {
     height: 50px;
     width: 50px;
-    fill: hsl(7, 78%, 44%)
+    fill: hsl(7, 78%, 44%);
+    align-self: center;
+}
+
+#add-to-do-button:hover {
+    cursor: pointer;
 }
 
 ul {
@@ -50,7 +75,7 @@ ul {
 }
 
 .main-content {
-    background-color: beige;
+    background-color: antiquewhite;
     padding: 1rem;
     display: grid;
     grid-template-rows: auto 1fr;
@@ -69,7 +94,9 @@ ul {
 .to-do {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    background-color:#fff4e5;
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.5);
     align-content: center;
     padding: 1rem;
 }
@@ -81,7 +108,53 @@ ul {
     align-self: center;
 }
 
+.delete-icon:hover {
+    cursor: pointer;
+}
+
 .footer {
     grid-column: 1 / 3;
-    background-color: skyblue;
+    background-color:hsl(7, 78%, 44%);
+    color: white;
+    text-align: center;
+}
+
+.add-to-do-dialog {
+    height: 75%;
+    width: 50%;
+    border-radius: 1rem;
+    border: none;
+    box-shadow:  0px 2px 8px rgba(0, 0, 0, 0.5);;
+}
+
+.add-to-do-form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    height: 100%;
+}
+
+.input {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+}
+
+.form-heading {
+    text-align: center;
+}
+
+#close-button, #submit-button {
+    background-color: hsl(7, 78%, 44%);
+    color: white;
+    font-weight: bold;
+    border: none;
+    height: 40px;
+    width: 100px;
+    border-radius: 0.5rem;
+    justify-self: right;
+}
+
+#submit-button {
+    background-color: hsl(120, 78%, 44%);
+    justify-self: center;
 }

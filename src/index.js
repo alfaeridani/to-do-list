@@ -40,7 +40,7 @@ function refreshMainContent() {
     removeMainContent();
     let mainContentDiv = document.querySelector(".main-content");
 
-    let mainContentTitle = document.createElement("h2");
+    let mainContentTitle = document.createElement("h1");
     mainContentTitle.className = "main-content-title";
     mainContentTitle.textContent = document.querySelector(`.${currentPage}`).textContent;
     mainContentDiv.appendChild(mainContentTitle);
@@ -81,7 +81,7 @@ function refreshMainContent() {
 
         // Create the title element
         const deleteButtonTitle = document.createElementNS(svgNS, "title");
-        deleteButtonTitle.textContent = "trash-can";
+        deleteButtonTitle.textContent = "Delete task";
         deleteButton.appendChild(deleteButtonTitle);
 
         // Create the path element
@@ -123,15 +123,15 @@ pages.forEach((page) => {
     })
 })
 
-addToDoToContainer('Eat mango', 'with rice maybe', '2024/08/30', 'High', 'Sports');
-addToDoToContainer('Take a shower', 'Also brush your teeth', '2024/09/01', 'Medium', 'Groceries');
-addToDoToContainer('Sleep', 'for 8 hours', '2024/09/12', 'Medium', 'Arts');
-addToDoToContainer('Eat mango', 'with rice maybe', '2024/08/30', 'High', 'Sports');
-addToDoToContainer('Take a shower', 'Also brush your teeth', '2024/09/01', 'Medium', 'Groceries');
-addToDoToContainer('Sleep', 'for 8 hours', '2024/09/12', 'Medium', 'Arts');
-addToDoToContainer('Eat mango', 'with rice maybe', '2024/08/30', 'High', 'Sports');
-addToDoToContainer('Take a shower', 'Also brush your teeth', '2024/09/01', 'Medium', 'Groceries');
-addToDoToContainer('Sleep', 'for 8 hours', '2024/09/12', 'Medium', 'Arts');
+addToDoToContainer('Eat mango', 'with rice and fish maybe', '2024-08-30', 'high', 'Sports');
+addToDoToContainer('Take a shower', 'Also brush your teeth', '2024-09-01', 'medium', 'Groceries');
+addToDoToContainer('Sleep', 'for 8 hours', '2024-09-12', 'medium', 'Arts');
+addToDoToContainer('Eat mango', 'with rice and fish maybe', '2024-08-30', 'high', 'Sports');
+addToDoToContainer('Take a shower', 'Also brush your teeth', '2024-09-01', 'medium', 'Groceries');
+addToDoToContainer('Sleep', 'for 8 hours', '2024-09-12', 'medium', 'Arts');
+addToDoToContainer('Eat mango', 'with rice and fish maybe', '2024-08-30', 'high', 'Sports');
+addToDoToContainer('Take a shower', 'Also brush your teeth', '2024-09-01', 'medium', 'Groceries');
+addToDoToContainer('Sleep', 'for 8 hours', '2024-09-12', 'medium', 'Arts');
 
 
 listAllProjects(TO_DO_CONTAINER, PROJECTS_LIST);
