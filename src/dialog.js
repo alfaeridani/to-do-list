@@ -1,116 +1,108 @@
 import { addToDoToContainer, refreshMainContent } from ".";
 
 function openDialogListener() {
-    let addToDoButton = document.querySelector("#add-to-do-button");
-    let addToDoDialog = document.querySelector(".add-to-do-dialog");
+    const addToDoButton = document.querySelector("#add-to-do-button");
+    const addToDoDialog = document.querySelector(".add-to-do-dialog");
+
     addToDoButton.addEventListener('click', () => {
-        createDialog();
+        if (!document.querySelector('.add-to-do-form')) {
+            createDialog();
+        }
         addToDoDialog.showModal();
     });
 }
 
 function createDialog() {
-    // Select the div where we will store the created dialog
-    const addToDoDialog = document.querySelector('.add-to-do-dialog')
+    const addToDoDialog = document.querySelector('.add-to-do-dialog');
 
-    // Create the form element
     const form = document.createElement('form');
     form.className = 'add-to-do-form';
 
-    // Create the close button
     const closeButton = document.createElement('button');
     closeButton.id = 'close-button';
+    closeButton.type = 'button';  // Change type to 'button' to prevent form submission
     closeButton.textContent = 'Close';
 
-    // Create the heading
     const heading = document.createElement('h1');
     heading.className = 'form-heading';
     heading.textContent = 'Add New To-Do';
 
-    // Create the task name label and input
-    const taskNameLabel = document.createElement('label');
-    taskNameLabel.setAttribute('for', 'task-name');
-    taskNameLabel.textContent = 'Task name:';
+    const taskNameDiv = createInputDiv('Task name:', 'task-name', 'Enter your task here...', 'text', true);
+    const descriptionDiv = createInputDiv('Description:', 'description', 'Add some description here...', 'textarea', false);
+    const dueDateDiv = createInputDiv('Due date:', 'due-date', '', 'date', true);
+    const projectDiv = createProjectSelect();
 
-    const taskNameInput = document.createElement('input');
-    taskNameInput.type = 'text';
-    taskNameInput.id = 'task-name';
-    taskNameInput.name = 'task-name';
-    taskNameInput.placeholder = 'Enter your task here...';
-    taskNameInput.maxLength = 120;
-    taskNameInput.required = true;
+    const priorityFieldset = createPriorityFieldset();
 
-    // Create task name div
-    const taskNameDiv = document.createElement('div');
-    taskNameDiv.className = 'input';
-    taskNameDiv.appendChild(taskNameLabel);
-    taskNameDiv.appendChild(taskNameInput);
+    const submitButton = document.createElement('button');
+    submitButton.type = 'submit';
+    submitButton.id = 'submit-button';
+    submitButton.textContent = 'Submit';
 
-    // Create the description label and textarea
-    const descriptionLabel = document.createElement('label');
-    descriptionLabel.setAttribute('for', 'description');
-    descriptionLabel.textContent = 'Description:';
+    form.append(closeButton, heading, taskNameDiv, descriptionDiv, dueDateDiv, priorityFieldset, projectDiv, submitButton);
+    addToDoDialog.appendChild(form);
 
-    const descriptionTextarea = document.createElement('textarea');
-    descriptionTextarea.id = 'description';
-    descriptionTextarea.name = 'description';
-    descriptionTextarea.placeholder = 'Add some description here...';
-    descriptionTextarea.maxLength = 360;
+    closeButton.addEventListener('click', closeDialogListener);
+    form.addEventListener('submit', submitDialogListener);
+}
 
-    // Create description div
-    const descriptionDiv = document.createElement('div');
-    descriptionDiv.className = 'input';
-    descriptionDiv.appendChild(descriptionLabel);
-    descriptionDiv.appendChild(descriptionTextarea);
+function createInputDiv(labelText, id, placeholder, type, required) {
+    const div = document.createElement('div');
+    div.className = 'input';
 
-    // Create the due date label and input
-    const dueDateLabel = document.createElement('label');
-    dueDateLabel.setAttribute('for', 'due-date');
-    dueDateLabel.textContent = 'Due date:';
+    const label = document.createElement('label');
+    label.setAttribute('for', id);
+    label.textContent = labelText;
 
-    const dueDateInput = document.createElement('input');
-    dueDateInput.type = 'date';
-    dueDateInput.id = 'due-date';
-    dueDateInput.name = 'due-date';
-    dueDateInput.required = true;
-
-    // Create due date div
-    const dueDateDiv = document.createElement('div');
-    dueDateDiv.className = 'input';
-    dueDateDiv.appendChild(dueDateLabel);
-    dueDateDiv.appendChild(dueDateInput);
-
-    // Create the priority fieldset and legend
-    const priorityFieldset = document.createElement('fieldset');
-    const priorityLegend = document.createElement('legend');
-    priorityLegend.textContent = 'Priority';
-    priorityFieldset.appendChild(priorityLegend);
-
-    // Create the projects options
-    const projects = ['Sports', 'Groceries', 'Appointments', 'Arts'];
-    
-    const projectLabel = document.createElement('label');
-    projectLabel.setAttribute('for', 'project');
-    projectLabel.textContent = 'Project';
-
-    const projectSelect = document.createElement('select');
-    projectSelect.id = 'project';
-    projectSelect.name = 'project';
-
-    for (let project of projects) {
-        let projectOption = document.createElement('option');
-        projectOption.value = project;
-        projectOption.textContent = project;
-        projectSelect.appendChild(projectOption);
+    let input;
+    if (type === 'textarea') {
+        input = document.createElement('textarea');
+    } else {
+        input = document.createElement('input');
+        input.type = type;
     }
+    input.id = id;
+    input.name = id;
+    input.placeholder = placeholder;
+    if (required) input.required = true;
 
-    // Create project div
-    const projectDiv = document.createElement('div');
-    projectDiv.className = 'input';
-    projectDiv.appendChild(projectLabel);
-    projectDiv.appendChild(projectSelect);
+    div.appendChild(label);
+    div.appendChild(input);
 
-    // Create the priority options
+    return div;
+}
+
+function createProjectSelect() {
+    const div = document.createElement('div');
+    div.className = 'input';
+
+    const label = document.createElement('label');
+    label.setAttribute('for', 'project');
+    label.textContent = 'Project';
+
+    const select = document.createElement('select');
+    select.id = 'project';
+    select.name = 'project';
+
+    const projects = ['Sports', 'Groceries', 'Appointments', 'Arts'];
+    projects.forEach(project => {
+        const option = document.createElement('option');
+        option.value = project;
+        option.textContent = project;
+        select.appendChild(option);
+    });
+
+    div.appendChild(label);
+    div.appendChild(select);
+
+    return div;
+}
+
+function createPriorityFieldset() {
+    const fieldset = document.createElement('fieldset');
+    const legend = document.createElement('legend');
+    legend.textContent = 'Priority';
+
     const priorities = [
         { id: 'low', value: 'low', label: 'Low', checked: true },
         { id: 'medium', value: 'medium', label: 'Medium', checked: false },
@@ -133,68 +125,38 @@ function createDialog() {
 
         div.appendChild(input);
         div.appendChild(label);
-        priorityFieldset.appendChild(div);
+        fieldset.appendChild(div);
     });
 
-    // Create the submit button
-    const submitButton = document.createElement('button');
-    submitButton.type = 'submit';
-    submitButton.id = 'submit-button';
-    submitButton.textContent = 'Submit';
+    fieldset.appendChild(legend);
 
-    // Append all elements to the form
-    form.appendChild(closeButton);
-    form.appendChild(heading);
-    form.appendChild(taskNameDiv);
-    form.appendChild(descriptionDiv);
-    form.appendChild(dueDateDiv);
-    form.appendChild(priorityFieldset);
-    form.appendChild(projectDiv);
-    form.appendChild(submitButton);
-
-    // Append the form to the body (or any other container element)
-    addToDoDialog.appendChild(form);
-
-    // Add listener for close button
-    closeDialogListener();
-
-    // Add listener for submit button
-    submitDialogListener();
-}
-
-function removeDialog() {
-    const addToDoForm = document.querySelector(".add-to-do-form")
-    if (addToDoForm) {
-        addToDoForm.remove();
-    }
+    return fieldset;
 }
 
 function closeDialogListener() {
-    let closeButton = document.querySelector("#close-button");
-    let addToDoDialog = document.querySelector(".add-to-do-dialog");
-    closeButton.addEventListener('click', () => {
-        removeDialog();
-        addToDoDialog.close();
-    });
+    const addToDoDialog = document.querySelector(".add-to-do-dialog");
+    const addToDoForm = document.querySelector(".add-to-do-form");
+    if (addToDoForm) {
+        addToDoForm.reset();
+        addToDoForm.remove();
+    }
+    addToDoDialog.close();
 }
 
-function submitDialogListener(container) {
-    let submitButton = document.querySelector("#submit-button");
-    let addToDoDialog = document.querySelector(".add-to-do-dialog");
-    submitButton.addEventListener('click', (event) => {
-        event.preventDefault();
-        
-        let title = document.querySelector("#task-name").value;
-        let description = document.querySelector("#description").value;
-        let dueDate = document.querySelector("#due-date").value;
-        let priority = document.querySelector("input[name=priority]:checked").value;
-        let project = document.querySelector("#project").value;
-        
-        addToDoToContainer(title, description, dueDate, priority, project);
-        refreshMainContent(container);
-        removeDialog();
-        addToDoDialog.close();
-    })
+function submitDialogListener(event) {
+    event.preventDefault();
+
+    const addToDoDialog = document.querySelector(".add-to-do-dialog");
+
+    const title = document.querySelector("#task-name").value;
+    const description = document.querySelector("#description").value;
+    const dueDate = document.querySelector("#due-date").value;
+    const priority = document.querySelector("input[name=priority]:checked").value;
+    const project = document.querySelector("#project").value;
+
+    addToDoToContainer(title, description, dueDate, priority, project);
+    refreshMainContent();
+    closeDialogListener();
 }
 
 export {
