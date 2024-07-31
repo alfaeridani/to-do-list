@@ -12,11 +12,21 @@ class ToDo {
     }
 }
 
-const TO_DO_CONTAINER = [];
+const TO_DO_CONTAINER = loadFromLocalStorage() || [];
 let currentPage = 'all-task';
+
+function saveToLocalStorage(toDoContainer) {
+    localStorage.setItem('toDoList', JSON.stringify(toDoContainer));
+}
+
+function loadFromLocalStorage() {
+    const toDoList = localStorage.getItem('toDoList');
+    return toDoList ? JSON.parse(toDoList) : null;
+}
 
 function addToDoToContainer(title, description, dueDate, priority, project) {
     TO_DO_CONTAINER.push(new ToDo(title, description, dueDate, priority, project));
+    saveToLocalStorage(TO_DO_CONTAINER);
 }
 
 function listAllProjects(toDoContainer) {
@@ -35,6 +45,7 @@ function addDeleteButtonListener(toDoId) {
     const index = TO_DO_CONTAINER.findIndex(toDo => toDo.id === toDoId);
     if (index > -1) {
         TO_DO_CONTAINER.splice(index, 1);
+        saveToLocalStorage(TO_DO_CONTAINER);
         refreshMainContent();
     }
 }
@@ -172,16 +183,22 @@ function sortToDosByDates(toDos) {
     });
 }
 
-// Sample ToDo items
-addToDoToContainer('Workout', 'Leg day', '2024-07-18', 'high', 'Sports');
-addToDoToContainer('Eat mango', 'Before it rots', '2024-08-30', 'low', 'None');
-addToDoToContainer('Buy vegetables', 'Carrots, celeries, green things...', '2024-09-01', 'high', 'Groceries');
-addToDoToContainer('Create vase', 'Decorate it with colorful pattern', '2024-09-12', 'medium', 'Arts');
-addToDoToContainer('Meeting with clients', 'Prepare for the presentation', '2024-07-31', 'high', 'Appointments');
+function initializeApp() {
+    // Sample ToDo items
+    if (!TO_DO_CONTAINER.length) {   
+        addToDoToContainer('Workout', 'Leg day', '2024-07-18', 'high', 'Sports');
+        addToDoToContainer('Eat mango', 'Before it rots.', '2024-08-30', 'low', 'None');
+        addToDoToContainer('Buy vegetables', 'Carrots, celeries, green things...', '2024-09-01', 'high', 'Groceries');
+        addToDoToContainer('Create vase', 'Decorate it with colorful pattern!', '2024-09-12', 'medium', 'Arts');
+        addToDoToContainer('Meeting with clients', 'Prepare for the presentation...', '2024-07-31', 'high', 'Appointments');
+    }
 
-openDialogListener();
-addPageEventListener();
-refreshMainContent();
+    openDialogListener();
+    addPageEventListener();
+    refreshMainContent();
+}
+
+initializeApp();
 
 export {
     addToDoToContainer,
