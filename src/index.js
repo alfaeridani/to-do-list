@@ -107,7 +107,9 @@ function refreshMainContent() {
 
     const toDosToDisplay = currentPage === 'all-task' ? TO_DO_CONTAINER : filterToDos(currentPage);
 
-    toDosToDisplay.forEach(toDo => {
+    const sortedToDos = sortToDosByDates(toDosToDisplay);
+
+    sortedToDos.forEach(toDo => {
         const toDoElement = createToDoElement(toDo);
         toDosContainer.appendChild(toDoElement);
     });
@@ -159,12 +161,23 @@ function isOverdue(dueDate) {
     return dueDateObj < today;
 }
 
+function sortToDosByDates(toDos) {
+    return toDos.slice().sort((a, b) => {
+        // Convert due dates to Date objects for comparison
+        const dateA = new Date(a.dueDate);
+        const dateB = new Date(b.dueDate);
+        
+        // Compare dates; earlier dates come first
+        return dateA - dateB;
+    });
+}
+
 // Sample ToDo items
 addToDoToContainer('Workout', 'Leg day', '2024-07-18', 'high', 'Sports');
-addToDoToContainer('Eat mango', 'With rice maybe', '2024-08-30', 'high', 'Sports');
-addToDoToContainer('Take a shower', 'Also brush your teeth', '2024-09-01', 'medium', 'Groceries');
-addToDoToContainer('Sleep', 'for 8 hours', '2024-09-12', 'medium', 'Arts');
-addToDoToContainer('Study programming', '2 hours a day', '2024-07-31', 'medium', 'Arts');
+addToDoToContainer('Eat mango', 'Before it rots', '2024-08-30', 'low', 'None');
+addToDoToContainer('Buy vegetables', 'Carrots, celeries, green things...', '2024-09-01', 'high', 'Groceries');
+addToDoToContainer('Create vase', 'Decorate it with colorful pattern', '2024-09-12', 'medium', 'Arts');
+addToDoToContainer('Meeting with clients', 'Prepare for the presentation', '2024-07-31', 'high', 'Appointments');
 
 openDialogListener();
 addPageEventListener();

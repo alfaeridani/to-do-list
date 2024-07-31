@@ -84,7 +84,7 @@ function createProjectSelect() {
     select.id = 'project';
     select.name = 'project';
 
-    const projects = ['Sports', 'Groceries', 'Appointments', 'Arts'];
+    const projects = ['None', 'Sports', 'Groceries', 'Appointments', 'Arts'];
     projects.forEach(project => {
         const option = document.createElement('option');
         option.value = project;
