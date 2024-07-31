@@ -3,6 +3,7 @@ import './style.css';
 
 class ToDo {
     constructor(title, description, dueDate, priority, project) {
+        this.id = Date.now(); // Unique ID based on the current timestamp
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
@@ -11,18 +12,15 @@ class ToDo {
     }
 }
 
+const TO_DO_CONTAINER = [];
+let currentPage = 'all-task';
+
 function addToDoToContainer(title, description, dueDate, priority, project) {
     TO_DO_CONTAINER.push(new ToDo(title, description, dueDate, priority, project));
 }
 
 function listAllProjects(toDoContainer) {
-    let projects = new Set();
-    for (let toDo of toDoContainer) {
-        if (toDo['project'] !== '') {
-            projects.add(toDo['project']);
-            console.log(projects);
-        }
-    }
+    const projects = new Set(toDoContainer.map(toDo => toDo.project).filter(project => project !== ''));
     return Array.from(projects);
 }
 
@@ -33,80 +31,86 @@ function removeMainContent() {
     }
 }
 
-function addDeleteButtonListener(container, toDo) {
-    let index = container.indexOf(toDo);
-    container.splice(index, 1);
-    refreshMainContent(container);
+function addDeleteButtonListener(toDoId) {
+    const index = TO_DO_CONTAINER.findIndex(toDo => toDo.id === toDoId);
+    if (index > -1) {
+        TO_DO_CONTAINER.splice(index, 1);
+        refreshMainContent();
+    }
+}
+
+function createToDoElement(toDo) {
+    const toDoContainer = document.createElement("div");
+    toDoContainer.className = "to-do";
+
+    const title = document.createElement("p");
+    title.className = "title";
+    title.textContent = toDo.title;
+
+    const description = document.createElement("p");
+    description.className = "description";
+    description.textContent = toDo.description;
+
+    const dueDate = document.createElement("p");
+    dueDate.className = "due-date";
+    dueDate.textContent = toDo.dueDate;
+
+    const priority = document.createElement("p");
+    priority.className = "priority";
+    priority.textContent = toDo.priority;
+
+    const project = document.createElement("p");
+    project.className = "project";
+    project.textContent = toDo.project;
+
+    const deleteButton = createDeleteButton(toDo.id);
+
+    toDoContainer.append(title, description, dueDate, priority, project, deleteButton);
+
+    return toDoContainer;
+}
+
+function createDeleteButton(toDoId) {
+    const svgNS = "http://www.w3.org/2000/svg";
+    const deleteButton = document.createElementNS(svgNS, "svg");
+    deleteButton.setAttribute("class", "delete-icon");
+    deleteButton.setAttribute("viewBox", "0 0 24 24");
+
+    const deleteButtonTitle = document.createElementNS(svgNS, "title");
+    deleteButtonTitle.textContent = "Delete task";
+    deleteButton.appendChild(deleteButtonTitle);
+
+    const path = document.createElementNS(svgNS, "path");
+    path.setAttribute("d", "M9,3V4H4V6H5V19A2,2 0 0,0 7,21H17A2,2 0 0,0 19,19V6H20V4H15V3H9M9,8H11V17H9V8M13,8H15V17H13V8Z");
+    deleteButton.appendChild(path);
+
+    deleteButton.addEventListener('click', () => {
+        addDeleteButtonListener(toDoId);
+    });
+
+    return deleteButton;
 }
 
 function refreshMainContent() {
     removeMainContent();
-    let mainContentDiv = document.querySelector(".main-content");
 
-    let mainContentTitle = document.createElement("h1");
+    const mainContentDiv = document.querySelector(".main-content");
+
+    const mainContentTitle = document.createElement("h1");
     mainContentTitle.className = "main-content-title";
     mainContentTitle.textContent = document.querySelector(`.${currentPage}`).textContent;
     mainContentDiv.appendChild(mainContentTitle);
 
-    let toDosContainer = document.createElement("div");
+    const toDosContainer = document.createElement("div");
     toDosContainer.className = "to-dos-container";
     mainContentDiv.appendChild(toDosContainer);
 
-    for (let toDo of TO_DO_CONTAINER) {
-        let title = document.createElement("p");
-        title.className = "title";
-        title.textContent = toDo.title;
+    const toDosToDisplay = currentPage === 'all-task' ? TO_DO_CONTAINER : filterToDosByProject(currentPage);
 
-        let description = document.createElement("p");
-        description.className = "description";
-        description.textContent = toDo.description;
-
-        let dueDate = document.createElement("p");
-        dueDate.className = "due-date";
-        dueDate.textContent = toDo.dueDate;
-
-        let priority = document.createElement("p");
-        priority.className = "priority";
-        priority.textContent = toDo.priority;    
-
-        let project = document.createElement("p");
-        project.className = "project";
-        project.textContent = toDo.project;       
-
-        // Define the SVG namespace
-        const svgNS = "http://www.w3.org/2000/svg";
-
-        // Create the main SVG element
-        const deleteButton = document.createElementNS(svgNS, "svg");
-        deleteButton.setAttribute("class", "delete-icon");
-        deleteButton.setAttribute("xmlns", svgNS);
-        deleteButton.setAttribute("viewBox", "0 0 24 24");
-
-        // Create the title element
-        const deleteButtonTitle = document.createElementNS(svgNS, "title");
-        deleteButtonTitle.textContent = "Delete task";
-        deleteButton.appendChild(deleteButtonTitle);
-
-        // Create the path element
-        const path = document.createElementNS(svgNS, "path");
-        path.setAttribute("d", "M9,3V4H4V6H5V19A2,2 0 0,0 7,21H17A2,2 0 0,0 19,19V6H20V4H15V3H9M9,8H11V17H9V8M13,8H15V17H13V8Z");
-        deleteButton.appendChild(path);
-
-        let toDoContainer = document.createElement("div");
-        toDoContainer.className = "to-do";
-
-        toDoContainer.appendChild(title);
-        toDoContainer.appendChild(description);
-        toDoContainer.appendChild(dueDate);
-        toDoContainer.appendChild(priority);
-        toDoContainer.appendChild(project);
-        toDoContainer.appendChild(deleteButton);
-        toDosContainer.appendChild(toDoContainer);
-
-        deleteButton.addEventListener('click', () => {
-            addDeleteButtonListener(TO_DO_CONTAINER, toDo);
-        });
-    }
+    toDosToDisplay.forEach(toDo => {
+        const toDoElement = createToDoElement(toDo);
+        toDosContainer.appendChild(toDoElement);
+    });
 }
 
 function changePage(pageClass) {
@@ -116,43 +120,24 @@ function changePage(pageClass) {
 
 function addPageEventListener() {
     const pages = document.querySelectorAll(".page");
-    pages.forEach((page) => {
+    pages.forEach(page => {
         page.addEventListener('click', () => {
-            let pageClass = page.classList[0];
-            changePage(pageClass);
-        })
-    })
+            changePage(page.classList[0]);
+        });
+    });
 }
 
 function filterToDosByProject(project) {
-    const filteredToDos = [];
-    for (let toDo of TO_DO_CONTAINER) {
-        if (toDo['project'] === project) {
-            filteredToDos.push(toDo);
-        }
-    }
-    return filteredToDos;
+    return TO_DO_CONTAINER.filter(toDo => toDo.project === project);
 }
 
-const TO_DO_CONTAINER = [];
-let PROJECTS_LIST  = [];
-let currentPage = 'all-task';
-
-addToDoToContainer('Eat mango', 'with rice and fish maybe', '2024-08-30', 'high', 'Sports');
-addToDoToContainer('Take a shower', 'Also brush your teeth', '2024-09-01', 'medium', 'Groceries');
-addToDoToContainer('Sleep', 'for 8 hours', '2024-09-12', 'medium', 'Arts');
-addToDoToContainer('Eat mango', 'with rice and fish maybe', '2024-08-30', 'high', 'Sports');
-addToDoToContainer('Take a shower', 'Also brush your teeth', '2024-09-01', 'medium', 'Groceries');
-addToDoToContainer('Sleep', 'for 8 hours', '2024-09-12', 'medium', 'Arts');
+// Sample ToDo items
 addToDoToContainer('Eat mango', 'with rice and fish maybe', '2024-08-30', 'high', 'Sports');
 addToDoToContainer('Take a shower', 'Also brush your teeth', '2024-09-01', 'medium', 'Groceries');
 addToDoToContainer('Sleep', 'for 8 hours', '2024-09-12', 'medium', 'Arts');
 
 openDialogListener();
 addPageEventListener();
-
-console.log(filterToDosByProject('Groceries'));
-
 refreshMainContent();
 
 export {
