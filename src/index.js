@@ -41,7 +41,7 @@ function addDeleteButtonListener(toDoId) {
 
 function createToDoElement(toDo) {
     const toDoContainer = document.createElement("div");
-    toDoContainer.className = "to-do";
+    toDoContainer.classList.add("to-do", toDo.priority);
 
     const title = document.createElement("p");
     title.className = "title";

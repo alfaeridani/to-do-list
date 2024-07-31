@@ -101,6 +101,19 @@ ul {
     padding: 1rem;
 }
 
+.low {
+    border-left: 1rem solid hsl(106, 78%, 44%);
+}
+
+.medium {
+    border-left: 1rem solid hsl(24, 78%, 56%);
+}
+
+.high {
+    border-left: 1rem solid hsl(0, 72%, 50%);
+    background-color: hsl(0, 0%, 100%);
+}
+
 .delete-icon {
     width: 35px;
     height: 35px;
