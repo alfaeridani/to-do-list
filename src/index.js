@@ -105,7 +105,7 @@ function refreshMainContent() {
     toDosContainer.className = "to-dos-container";
     mainContentDiv.appendChild(toDosContainer);
 
-    const toDosToDisplay = currentPage === 'all-task' ? TO_DO_CONTAINER : filterToDosByProject(currentPage);
+    const toDosToDisplay = currentPage === 'all-task' ? TO_DO_CONTAINER : filterToDos(currentPage);
 
     toDosToDisplay.forEach(toDo => {
         const toDoElement = createToDoElement(toDo);
@@ -127,14 +127,44 @@ function addPageEventListener() {
     });
 }
 
-function filterToDosByProject(project) {
-    return TO_DO_CONTAINER.filter(toDo => toDo.project === project);
+function filterToDos(pageClass) {
+    const filteredToDos = TO_DO_CONTAINER.filter(toDo => {
+        if (pageClass === 'today-task') {
+            return isDueToday(toDo.dueDate);
+        } else if (pageClass === 'upcoming-task') {
+            return isUpcomingDueDate(toDo.dueDate);
+        } else if (pageClass === 'overdue-task') {
+            return isOverdue(toDo.dueDate);
+        } else {
+            return toDo.project === pageClass;
+        }
+    });
+    return filteredToDos;
+}
+
+function isDueToday(dueDate) {
+    const today = new Date().toISOString().split('T')[0];
+    return dueDate === today;
+}
+
+function isUpcomingDueDate(dueDate) {
+    const today = new Date();
+    const dueDateObj = new Date(dueDate);
+    return dueDateObj > today;
+}
+
+function isOverdue(dueDate) {
+    const today = new Date().toISOString().split('T')[0];
+    const dueDateObj = new Date(dueDate).toISOString().split('T')[0];
+    return dueDateObj < today;
 }
 
 // Sample ToDo items
-addToDoToContainer('Eat mango', 'with rice and fish maybe', '2024-08-30', 'high', 'Sports');
+addToDoToContainer('Workout', 'Leg day', '2024-07-18', 'high', 'Sports');
+addToDoToContainer('Eat mango', 'With rice maybe', '2024-08-30', 'high', 'Sports');
 addToDoToContainer('Take a shower', 'Also brush your teeth', '2024-09-01', 'medium', 'Groceries');
 addToDoToContainer('Sleep', 'for 8 hours', '2024-09-12', 'medium', 'Arts');
+addToDoToContainer('Study programming', '2 hours a day', '2024-07-31', 'medium', 'Arts');
 
 openDialogListener();
 addPageEventListener();
